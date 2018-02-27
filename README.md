@@ -10,9 +10,13 @@ NuGet packages (recommended)
 ----------------------------
 
 https://www.nuget.org/packages/Microsoft-WindowsAPICodePack-Core/
+
 https://www.nuget.org/packages/Microsoft-WindowsAPICodePack-Shell/
+
 https://www.nuget.org/packages/Microsoft-WindowsAPICodePack-ShellExtensions/
+
 https://www.nuget.org/packages/Microsoft-WindowsAPICodePack-ExtendedLinguisticServices/
+
 https://www.nuget.org/packages/Microsoft-WindowsAPICodePack-Sensors/
 
 Licence
@@ -23,21 +27,13 @@ See [LICENSE](LICENSE) for the original licence (retrieved from [WebArchive](htt
 Release notes
 -------------
 
-See [CHANGELOG](CHANGELOG) for latest changes.
+See [CHANGELOG](CHANGELOG.md) for latest changes.
 
-Bugs
+Issues
 ----
 
-When you submit a bug:
+When you submit a issue:
 
- - provide a short example code showing the bug
+ - describe the observed behavior/result
  - describe the expected behavior/result
-
-Usage notes
------------
-
-**DirectX**
-
-The DirectX package will work under x86 and x64 configuration platforms but not for AnyCPU platform (because there is no such platform for C++/CLI projects). Consequently, the package will purposefully fail the build and tell you why it did.
-
-Note: package is here for historical reasons, it is highly recommended to use [SharpDX](http://sharpdx.org/) instead.
+ - provide example code showing the issue where appropriate
