@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Microsoft-WindowsAPICodePack-ShellExtensions</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>rpastric</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/contre/Windows-API-Code-Pack-1.1/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/contre/Windows-API-Code-Pack-1.1</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <summary>Windows® API Code Pack for Microsoft® .NET Framework provides a source code library that can be used to access some features of Windows 7 and Windows Vista from managed code.</summary>
+    <releaseNotes>See CHANGELOG.md in project site. https://github.com/contre/Windows-API-Code-Pack-1.1/CHANGELOG.md </releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <language>en-US</language>
+    <tags>WindowsAPICodePack</tags>
+  </metadata>
+</package>
