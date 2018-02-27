@@ -1,9 +1,13 @@
 2018-02-27
 
-Core 1.1.3
+Core 1.1.3.1
+
 Shell 1.1.3
+
 ShellExtensions 1.1.3
+
 Sensors 1.1.3
+
 ExtendedLinguisticServices 1.1.3
 - Fix Enabled property not working properly #1
 - Fixed marshaling errors and memory leaks with TaskDialogButton's #2

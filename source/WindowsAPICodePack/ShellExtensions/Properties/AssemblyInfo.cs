@@ -5,7 +5,7 @@ using System.Security;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.WindowsAPICodePack.ShellExtensions")]
+[assembly: AssemblyTitle("Microsoft-WindowsAPICodePack-ShellExtensions")]
 [assembly: AssemblyDescription("WindowsAPICodePack for ShellExtensions")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
