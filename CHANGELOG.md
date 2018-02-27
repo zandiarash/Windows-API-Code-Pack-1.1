@@ -1,14 +1,9 @@
-2018-02-27
-
-Core 1.1.3.1
-
-Shell 1.1.3
-
-ShellExtensions 1.1.3
-
-Sensors 1.1.3
-
-ExtendedLinguisticServices 1.1.3
+### 2018-02-27  
+**Core 1.1.3.1**  
+**Shell 1.1.3**  
+**ShellExtensions 1.1.3**  
+**Sensors 1.1.3**  
+**ExtendedLinguisticServices 1.1.3**  
 - Fix Enabled property not working properly #1
 - Fixed marshaling errors and memory leaks with TaskDialogButton's #2
 - Fix a bug where a ShellLink was not properly created #3
@@ -22,8 +17,7 @@ ExtendedLinguisticServices 1.1.3
 - Fixes for NativeTaskDialog aybe#29
 - Revert "Return correct value when closing". See aybe#41 for details #12
 
-02/01/2016
-
-Core 1.1.2
+### 02/01/2016  
+**Core 1.1.2**  
 - TaskDialog icons were visible only when defined in Opened event
 - TaskDialog custom/hyperlink button not closing dialog from within Click event
