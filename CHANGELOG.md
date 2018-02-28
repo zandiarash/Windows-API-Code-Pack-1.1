@@ -1,3 +1,11 @@
+### 2018-02-28  
+**Core 1.1.3.2**  
+**Shell 1.1.3.2**  
+**ShellExtensions 1.1.3.2**  
+**Sensors 1.1.3.2**  
+**ExtendedLinguisticServices 1.1.3.2**  
+- Fix dependencies between the packages
+
 ### 2018-02-27  
 **Core 1.1.3.1**  
 **Shell 1.1.3**  

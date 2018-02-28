@@ -141,7 +141,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(SolutionDir)tools\nuget pack $(ProjectPath) -symbols -properties Configuration=$(ConfigurationName)</PostBuildEvent>
+    <PostBuildEvent>$(SolutionDir)tools\nuget pack $(ProjectPath) -symbols -IncludeReferencedProjects -properties Configuration=$(ConfigurationName)</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

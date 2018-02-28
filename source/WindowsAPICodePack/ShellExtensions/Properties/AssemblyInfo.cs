@@ -6,7 +6,7 @@ using System.Security;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Microsoft-WindowsAPICodePack-ShellExtensions")]
-[assembly: AssemblyDescription("WindowsAPICodePack for ShellExtensions")]
+[assembly: AssemblyDescription("The ShellExtensions code for the WindowsAPICodePack. This is an updated version containing all available bug fixes for this code as of 2018-02-28")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("Microsoft Windows API Code Pack for .NET Framework")]
@@ -36,7 +36,7 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.3.0")]
-[assembly: AssemblyFileVersion("1.1.3.0")]
+[assembly: AssemblyVersion("1.1.3.2")]
+[assembly: AssemblyFileVersion("1.1.3.2")]
 
 [assembly: NeutralResourcesLanguageAttribute("en")]

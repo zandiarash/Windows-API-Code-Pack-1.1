@@ -10,7 +10,7 @@ using System.Resources;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Microsoft-WindowsAPICodePack-ExtendedLinguisticServices")]
-[assembly: AssemblyDescription("WindowsAPICodePack for Extended Linguistic Services")]
+[assembly: AssemblyDescription("The Extended Linguistic Services code for the WindowsAPICodePack. This is an updated version containing all available bug fixes for this code as of 2018-02-28")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("Microsoft Windows API Code Pack for .NET Framework")]
@@ -33,6 +33,6 @@ using System.Resources;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.1.3.0")]
-[assembly: AssemblyFileVersion("1.1.3.0")]
+[assembly: AssemblyVersion("1.1.3.2")]
+[assembly: AssemblyFileVersion("1.1.3.2")]
 [assembly: NeutralResourcesLanguageAttribute("en")]
