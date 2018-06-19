@@ -1,3 +1,12 @@
+### 2018-06-19  
+**Core 1.1.3.3**  
+**Shell 1.1.3.3**  
+**ShellExtensions 1.1.3.3**  
+**Sensors 1.1.3.3**  
+**ExtendedLinguisticServices 1.1.3.3**  
+- Retarget to .NET 4.5.2 instead of .NET 4.6.2. This is the oldest version of the .NET framework that is still under support.
+
+
 ### 2018-02-28  
 **Core 1.1.3.2**  
 **Shell 1.1.3.2**  
