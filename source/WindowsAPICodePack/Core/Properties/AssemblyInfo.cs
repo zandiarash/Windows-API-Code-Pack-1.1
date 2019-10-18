@@ -1,23 +1,8 @@
 ﻿//Copyright (c) Microsoft Corporation.  All rights reserved.
 
 using System;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
-using System.Resources;
-
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.WindowsAPICodePack")]
-[assembly: AssemblyDescription("The Core code for the WindowsAPICodePack. This is an updated version containing all available bug fixes for this code as of 2018-02-28")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Microsoft Windows API Code Pack for .NET Framework")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2010")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
 
 [assembly: InternalsVisibleTo("Microsoft.WindowsAPICodePack.Shell, PublicKey=0024000004800000940000000602000000240000525341310004000001000100917a8a363fcbe4d32917c03b9ec22bad22f044c480f2854aafd586fc11a18ec730c74ab34122a1f5ef41cf462410e721fe9817b69fed30d33889c876007693bcc752b512fa55ef3f751ed5663fe588492a9069911534fa3465e167bc6a91f8b99d20b436db4a979dde0f0eb8f3247fdce9f18432ee69254ef92455a8c3788db8")]
 [assembly: InternalsVisibleTo("Microsoft.WindowsAPICodePack.Sensors, PublicKey=0024000004800000940000000602000000240000525341310004000001000100917a8a363fcbe4d32917c03b9ec22bad22f044c480f2854aafd586fc11a18ec730c74ab34122a1f5ef41cf462410e721fe9817b69fed30d33889c876007693bcc752b512fa55ef3f751ed5663fe588492a9069911534fa3465e167bc6a91f8b99d20b436db4a979dde0f0eb8f3247fdce9f18432ee69254ef92455a8c3788db8")]
@@ -30,14 +15,3 @@ using System.Resources;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("ac9740bc-3035-43ee-9a68-1dde36ab1f5e")]
-
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-[assembly: AssemblyVersion("1.1.3.3")]
-[assembly: AssemblyFileVersion("1.1.3.3")]
-[assembly: NeutralResourcesLanguageAttribute("en")]
