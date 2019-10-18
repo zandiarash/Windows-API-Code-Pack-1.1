@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Microsoft.WindowsAPICodePack.Sensors</AssemblyName>
     <PackageId>Microsoft-WindowsAPICodePack-Sensors</PackageId>
-    <VersionPrefix>1.1.3.3</VersionPrefix>
+    <VersionPrefix>1.1.4</VersionPrefix>
     <Title>$(AssemblyName)</Title>
     <Authors>rpastric;contre;dahall</Authors>
     <Company>Microsoft</Company>
