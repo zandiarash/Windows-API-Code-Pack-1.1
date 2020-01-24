@@ -1,86 +1,34 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Shell;
+using Microsoft.WindowsAPICodePack.ShellExtensions.Interop;
+using Microsoft.WindowsAPICodePack.ShellExtensions.Resources;
+using System;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
-using Microsoft.WindowsAPICodePack.ShellExtensions.Interop;
-using Microsoft.WindowsAPICodePack.ShellExtensions.Resources;
-using Microsoft.WindowsAPICodePack.Shell;
 
 namespace Microsoft.WindowsAPICodePack.ShellExtensions
 {
 	/// <summary>
-	/// This is the base class for all WPF-based preview handlers and provides their basic functionality.
-	/// To create a custom preview handler that contains a WPF user control,
-	/// a class must derive from this, use the <see cref="PreviewHandlerAttribute"/>,
-	/// and implement 1 or more of the following interfaces: 
-	/// <see cref="IPreviewFromStream"/>, 
-	/// <see cref="IPreviewFromShellObject"/>, 
-	/// <see cref="IPreviewFromFile"/>.   
+	/// This is the base class for all WPF-based preview handlers and provides their basic functionality. To create a custom preview handler
+	/// that contains a WPF user control, a class must derive from this, use the <see cref="PreviewHandlerAttribute"/>, and implement 1 or
+	/// more of the following interfaces: <see cref="IPreviewFromStream"/>, <see cref="IPreviewFromShellObject"/>, <see cref="IPreviewFromFile"/>.
 	/// </summary>
 	public abstract class WpfPreviewHandler : PreviewHandler, IDisposable
 	{
-		HwndSource _source = null;
-		private IntPtr _parentHandle = IntPtr.Zero;
 		private NativeRect _bounds;
+		private IntPtr _parentHandle = IntPtr.Zero;
+		private HwndSource _source = null;
 
-		/// <summary>
-		/// This control must be populated by the deriving class before the preview is shown.
-		/// </summary>
+		/// <summary>Preview handler control finalizer</summary>
+		~WpfPreviewHandler()
+		{
+			Dispose(false);
+		}
+
+		/// <summary>This control must be populated by the deriving class before the preview is shown.</summary>
 		public UserControl Control { get; protected set; }
 
-		/// <summary>
-		/// Throws an exception if the Control property has not been populated.
-		/// </summary>
-		protected void ThrowIfNoControl()
-		{
-			if (Control == null)
-			{
-				throw new InvalidOperationException(LocalizedMessages.PreviewHandlerControlNotInitialized);
-			}
-		}
-
-		/// <summary>
-		/// Updates the placement of the Control.
-		/// </summary>
-		protected void UpdatePlacement()
-		{
-			if (_source != null)
-			{
-				Shell.Interop.HandlerNativeMethods.SetParent(_source.Handle, _parentHandle);
-
-				HandlerNativeMethods.SetWindowPos(_source.Handle, new IntPtr((int)SetWindowPositionInsertAfter.Top),
-				0, 0, Math.Abs(_bounds.Left - _bounds.Right), Math.Abs(_bounds.Top - _bounds.Bottom), SetWindowPositionOptions.ShowWindow);
-			}
-		}
-
-		/// <inheritdoc />
-		protected override void SetParentHandle(IntPtr handle)
-		{
-			_parentHandle = handle;
-			UpdatePlacement();
-		}
-
-		/// <inheritdoc />
-		protected override void Initialize()
-		{
-			if (_source == null)
-			{
-				ThrowIfNoControl();
-
-				HwndSourceParameters p = new HwndSourceParameters();
-				p.WindowStyle = (int)(WindowStyles.Child | WindowStyles.Visible | WindowStyles.ClipSiblings);
-				p.ParentWindow = _parentHandle;
-				p.Width = Math.Abs(_bounds.Left - _bounds.Right);
-				p.Height = Math.Abs(_bounds.Top - _bounds.Bottom);
-
-				_source = new HwndSource(p);
-				_source.CompositionTarget.BackgroundColor = Brushes.WhiteSmoke.Color;
-				_source.RootVisual = (Visual)Control.Content;
-			}
-			UpdatePlacement();
-		}
-
-		/// <inheritdoc />
+		/// <inheritdoc/>
 		protected override IntPtr Handle
 		{
 			get
@@ -95,19 +43,31 @@ namespace Microsoft.WindowsAPICodePack.ShellExtensions
 			}
 		}
 
-		/// <inheritdoc />
-		protected override void UpdateBounds(NativeRect bounds)
+		/// <summary>Disposes the control</summary>
+		public void Dispose()
 		{
-			_bounds = bounds;
-			UpdatePlacement();
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Provides means to dispose the object. When overriden, it is imperative that base.Dispose(true) is called within the implementation.
+		/// </summary>
+		/// <param name="disposing"></param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing && _source != null)
+			{
+				_source.Dispose();
+			}
+		}
+
+		/// <inheritdoc/>
 		protected override void HandleInitializeException(Exception caughtException)
 		{
 			if (caughtException == null) { return; }
 
-			TextBox text = new TextBox
+			var text = new TextBox
 			{
 				IsReadOnly = true,
 				MaxLines = 20,
@@ -116,33 +76,39 @@ namespace Microsoft.WindowsAPICodePack.ShellExtensions
 			Control = new UserControl() { Content = text };
 		}
 
-		/// <inheritdoc />
-		protected override void SetFocus()
+		/// <inheritdoc/>
+		protected override void Initialize()
 		{
-			Control.Focus();
+			if (_source == null)
+			{
+				ThrowIfNoControl();
+
+				var p = new HwndSourceParameters
+				{
+					WindowStyle = (int)(WindowStyles.Child | WindowStyles.Visible | WindowStyles.ClipSiblings),
+					ParentWindow = _parentHandle,
+					Width = Math.Abs(_bounds.Left - _bounds.Right),
+					Height = Math.Abs(_bounds.Top - _bounds.Bottom)
+				};
+
+				_source = new HwndSource(p);
+				_source.CompositionTarget.BackgroundColor = Brushes.WhiteSmoke.Color;
+				_source.RootVisual = (Visual)Control.Content;
+			}
+			UpdatePlacement();
 		}
 
-		/// <inheritdoc />
-		protected override void SetBackground(int argb)
-		{
-			Control.Background = new SolidColorBrush(Color.FromArgb(
-				(byte)((argb >> 24) & 0xFF), //a         
+		/// <inheritdoc/>
+		protected override void SetBackground(int argb) => Control.Background = new SolidColorBrush(Color.FromArgb(
+				(byte)((argb >> 24) & 0xFF), //a
 				(byte)((argb >> 16) & 0xFF), //r
 				(byte)((argb >> 8) & 0xFF), //g
-				(byte)(argb & 0xFF))); //b
-		}
+				(byte)(argb & 0xFF)));
 
-		/// <inheritdoc />
-		protected override void SetForeground(int argb)
-		{
-			Control.Foreground = new SolidColorBrush(Color.FromArgb(
-				 (byte)((argb >> 24) & 0xFF), //a                
-				 (byte)((argb >> 16) & 0xFF), //r
-				 (byte)((argb >> 8) & 0xFF), //g
-				 (byte)(argb & 0xFF))); //b                 
-		}
+		/// <inheritdoc/>
+		protected override void SetFocus() => Control.Focus();
 
-		/// <inheritdoc />
+		/// <inheritdoc/>
 		protected override void SetFont(Interop.LogFont font)
 		{
 			if (font == null) { throw new ArgumentNullException("font"); }
@@ -154,39 +120,50 @@ namespace Microsoft.WindowsAPICodePack.ShellExtensions
 				System.Windows.FontWeights.Normal;
 		}
 
-		#region IDisposable Members
+		/// <inheritdoc/>
+		protected override void SetForeground(int argb) => Control.Foreground = new SolidColorBrush(Color.FromArgb(
+				 (byte)((argb >> 24) & 0xFF), //a
+				 (byte)((argb >> 16) & 0xFF), //r
+				 (byte)((argb >> 8) & 0xFF), //g
+				 (byte)(argb & 0xFF)));
 
-		/// <summary>
-		/// Preview handler control finalizer
-		/// </summary>
-		~WpfPreviewHandler()
+		/// <inheritdoc/>
+		protected override void SetParentHandle(IntPtr handle)
 		{
-			Dispose(false);
+			_parentHandle = handle;
+			UpdatePlacement();
 		}
 
-		/// <summary>
-		/// Disposes the control
-		/// </summary>
-		public void Dispose()
+		/// <summary>Throws an exception if the Control property has not been populated.</summary>
+		protected void ThrowIfNoControl()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		/// <summary>
-		/// Provides means to dispose the object.
-		/// When overriden, it is imperative that base.Dispose(true) is called within the implementation.
-		/// </summary>
-		/// <param name="disposing"></param>
-		protected virtual void Dispose(bool disposing)
-		{
-			if (disposing && _source != null)
+			if (Control == null)
 			{
-				_source.Dispose();
+				throw new InvalidOperationException(LocalizedMessages.PreviewHandlerControlNotInitialized);
 			}
 		}
 
-		#endregion
+		/// <inheritdoc/>
+		protected override void UpdateBounds(NativeRect bounds)
+		{
+			_bounds = bounds;
+			UpdatePlacement();
+		}
 
+		/// <summary>Updates the placement of the Control.</summary>
+		protected void UpdatePlacement()
+		{
+			if (_source != null)
+			{
+				Shell.Interop.HandlerNativeMethods.SetParent(_source.Handle, _parentHandle);
+
+				HandlerNativeMethods.SetWindowPos(_source.Handle, new IntPtr((int)SetWindowPositionInsertAfter.Top),
+				0, 0, Math.Abs(_bounds.Left - _bounds.Right), Math.Abs(_bounds.Top - _bounds.Bottom), SetWindowPositionOptions.ShowWindow);
+			}
+		}
+
+		//b
+
+		//b
 	}
 }

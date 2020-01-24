@@ -4,198 +4,100 @@ using System;
 
 namespace Microsoft.WindowsAPICodePack.Net
 {
-    /// <summary>
-    /// Represents a network on the local machine. 
-    /// It can also represent a collection of network 
-    /// connections with a similar network signature.
-    /// </summary>
-    /// <remarks>
-    /// Instances of this class are obtained by calling 
-    /// methods on the <see cref="NetworkListManager"/> class.
-    /// </remarks>
-    public class Network
-    {
-        #region Private Fields
+	/// <summary>
+	/// Represents a network on the local machine. It can also represent a collection of network connections with a similar network signature.
+	/// </summary>
+	/// <remarks>Instances of this class are obtained by calling methods on the <see cref="NetworkListManager"/> class.</remarks>
+	public class Network
+	{
+		private readonly INetwork network;
 
-        INetwork network;
+		internal Network(INetwork network) => this.network = network;
 
-        #endregion // Private Fields
+		/// <summary>Gets or sets the category of a network. The categories are trusted, untrusted, or authenticated.</summary>
+		/// <value>A <see cref="NetworkCategory"/> value.</value>
+		public NetworkCategory Category
+		{
+			get => network.GetCategory();
 
-        internal Network(INetwork network)
-        {
-            this.network = network;
-        }
+			set => network.SetCategory(value);
+		}
 
-        /// <summary>
-        /// Gets or sets the category of a network. The 
-        /// categories are trusted, untrusted, or 
-        /// authenticated.
-        /// </summary>
-        /// <value>A <see cref="NetworkCategory"/> value.</value>
-        public NetworkCategory Category
-        {
-            get
-            {
-                return network.GetCategory();
-            }
+		/// <summary>Gets the local date and time when the network was connected.</summary>
+		/// <value>A <see cref="System.DateTime"/> object.</value>
+		public DateTime ConnectedTime
+		{
+			get
+			{
+				network.GetTimeCreatedAndConnected(out var dummy1, out var dummy2, out var low, out var high);
+				long time = high;
+				// Shift the day info into the high order bits.
+				time <<= 32;
+				time |= low;
+				return DateTime.FromFileTimeUtc(time);
+			}
+		}
 
-            set
-            {
-                network.SetCategory(value);
-            }
-        }
+		/// <summary>Gets the network connections for the network.</summary>
+		/// <value>A <see cref="NetworkConnectionCollection"/> object.</value>
+		public NetworkConnectionCollection Connections => new NetworkConnectionCollection(network.GetNetworkConnections());
 
-        /// <summary>
-        /// Gets the local date and time when the network 
-        /// was connected.
-        /// </summary>
-        /// <value>A <see cref="System.DateTime"/> object.</value>
-        public DateTime ConnectedTime
-        {
-            get
-            {
-                uint low, high, dummy1, dummy2;
-                network.GetTimeCreatedAndConnected(out dummy1, out dummy2, out low, out high);
-                long time = high;
-                // Shift the day info into the high order bits.
-                time <<= 32;
-                time |= low;
-                return DateTime.FromFileTimeUtc(time);
-            }
-        }
+		/// <summary>Gets the connectivity state of the network.</summary>
+		/// <value>A <see cref="Connectivity"/> value.</value>
+		/// <remarks>Connectivity provides information on whether the network is connected, and the protocols in use for network traffic.</remarks>
+		public ConnectivityStates Connectivity => network.GetConnectivity();
 
-        /// <summary>
-        /// Gets the network connections for the network.
-        /// </summary>
-        /// <value>A <see cref="NetworkConnectionCollection"/> object.</value>
-        public NetworkConnectionCollection Connections
-        {
-            get
-            {
-                return new NetworkConnectionCollection(network.GetNetworkConnections());
-            }
-        }
+		/// <summary>Gets the local date and time when the network was created.</summary>
+		/// <value>A <see cref="System.DateTime"/> object.</value>
+		public DateTime CreatedTime
+		{
+			get
+			{
+				network.GetTimeCreatedAndConnected(out var low, out var high, out var dummy1, out var dummy2);
+				long time = high;
+				//Shift the value into the high order bits.
+				time <<= 32;
+				time |= low;
+				return DateTime.FromFileTimeUtc(time);
+			}
+		}
 
-        /// <summary>
-        /// Gets the connectivity state of the network.
-        /// </summary>
-        /// <value>A <see cref="Connectivity"/> value.</value>
-        /// <remarks>Connectivity provides information on whether
-        /// the network is connected, and the protocols
-        /// in use for network traffic.</remarks>
-        public ConnectivityStates Connectivity
-        {
-            get
-            {
-                return network.GetConnectivity();
-            }
-        }
+		/// <summary>Gets or sets a description for the network.</summary>
+		/// <value>A <see cref="System.String"/> value.</value>
+		public string Description
+		{
+			get => network.GetDescription();
 
-        /// <summary>
-        /// Gets the local date and time when the 
-        /// network was created.
-        /// </summary>
-        /// <value>A <see cref="System.DateTime"/> object.</value>
-        public DateTime CreatedTime
-        {
-            get
-            {
-                uint low, high, dummy1, dummy2;
-                network.GetTimeCreatedAndConnected(out low, out high, out dummy1, out dummy2);
-                long time = high;
-                //Shift the value into the high order bits.
-                time <<= 32;
-                time |= low;
-                return DateTime.FromFileTimeUtc(time);
-            }
-        }
+			set => network.SetDescription(value);
+		}
 
-        /// <summary>
-        /// Gets or sets a description for the network.
-        /// </summary>
-        /// <value>A <see cref="System.String"/> value.</value>
-        public string Description
-        {
-            get
-            {
-                return network.GetDescription();
-            }
+		/// <summary>Gets the domain type of the network.</summary>
+		/// <value>A <see cref="DomainType"/> value.</value>
+		/// <remarks>
+		/// The domain indictates whether the network is an Active Directory Network, and whether the machine has been authenticated by
+		/// Active Directory.
+		/// </remarks>
+		public DomainType DomainType => network.GetDomainType();
 
-            set
-            {
-                network.SetDescription(value);
-            }
-        }
+		/// <summary>Gets or sets the name of the network.</summary>
+		/// <value>A <see cref="System.String"/> value.</value>
+		public string Name
+		{
+			get => network.GetName();
 
-        /// <summary>
-        /// Gets the domain type of the network. 
-        /// </summary>
-        /// <value>A <see cref="DomainType"/> value.</value>
-        /// <remarks>The domain
-        /// indictates whether the network is an Active
-        /// Directory Network, and whether the machine
-        /// has been authenticated by Active Directory.</remarks>
-        public DomainType DomainType
-        {
-            get
-            {
-                return network.GetDomainType();
-            }
-        }
+			set => network.SetName(value);
+		}
 
-        /// <summary>
-        /// Gets a value that indicates whether there is
-        /// network connectivity.
-        /// </summary>
-        /// <value>A <see cref="System.Boolean"/> value.</value>
-        public bool IsConnected
-        {
-            get
-            {
-                return network.IsConnected;
-            }
-        }
+		/// <summary>Gets a unique identifier for the network.</summary>
+		/// <value>A <see cref="System.Guid"/> value.</value>
+		public Guid NetworkId => network.GetNetworkId();
 
-        /// <summary>
-        /// Gets a value that indicates whether there is 
-        /// Internet connectivity.
-        /// </summary>
-        /// <value>A <see cref="System.Boolean"/> value.</value>
-        public bool IsConnectedToInternet
-        {
-            get
-            {
-                return network.IsConnectedToInternet;
-            }
-        }
+		/// <summary>Gets a value that indicates whether there is network connectivity.</summary>
+		/// <value>A <see cref="System.Boolean"/> value.</value>
+		public bool IsConnected => network.IsConnected;
 
-        /// <summary>
-        /// Gets or sets the name of the network.
-        /// </summary>
-        /// <value>A <see cref="System.String"/> value.</value>
-        public string Name
-        {
-            get
-            {
-                return network.GetName();
-            }
-
-            set
-            {
-                network.SetName(value);
-            }
-        }
-
-        /// <summary>
-        /// Gets a unique identifier for the network.
-        /// </summary>
-        /// <value>A <see cref="System.Guid"/> value.</value>
-        public Guid NetworkId
-        {
-            get
-            {
-                return network.GetNetworkId();
-            }
-        }
-    }
+		/// <summary>Gets a value that indicates whether there is Internet connectivity.</summary>
+		/// <value>A <see cref="System.Boolean"/> value.</value>
+		public bool IsConnectedToInternet => network.IsConnectedToInternet;
+	}
 }

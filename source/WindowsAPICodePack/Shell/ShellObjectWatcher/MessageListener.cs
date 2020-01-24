@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Shell.Interop;
+using Microsoft.WindowsAPICodePack.Shell.Resources;
+using MS.WindowsAPICodePack.Internal;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
-using MS.WindowsAPICodePack.Internal;
-using Microsoft.WindowsAPICodePack.Shell.Interop;
-using Microsoft.WindowsAPICodePack.Shell.Resources;
 
 namespace Microsoft.WindowsAPICodePack.Shell
 {
@@ -21,9 +21,9 @@ namespace Microsoft.WindowsAPICodePack.Shell
 		private static Thread _windowThread = null;
 		private static volatile bool _running = false;
 
-		private static ShellObjectWatcherNativeMethods.WndProcDelegate wndProc = WndProc;
+		private static readonly ShellObjectWatcherNativeMethods.WndProcDelegate wndProc = WndProc;
 		// Dictionary relating window's hwnd to its message window
-		private static Dictionary<IntPtr, MessageListener> _listeners = new Dictionary<IntPtr, MessageListener>();
+		private static readonly Dictionary<IntPtr, MessageListener> _listeners = new Dictionary<IntPtr, MessageListener>();
 		private static IntPtr _firstWindowHandle = IntPtr.Zero;
 
 		private static readonly object _crossThreadWindowLock = new object();
@@ -82,11 +82,13 @@ namespace Microsoft.WindowsAPICodePack.Shell
 
 		private static void RegisterWindowClass()
 		{
-			WindowClassEx classEx = new WindowClassEx();
-			classEx.ClassName = MessageWindowClassName;
-			classEx.WndProc = wndProc;
+			var classEx = new WindowClassEx
+			{
+				ClassName = MessageWindowClassName,
+				WndProc = wndProc,
 
-			classEx.Size = (uint)Marshal.SizeOf(typeof(WindowClassEx));
+				Size = (uint)Marshal.SizeOf(typeof(WindowClassEx))
+			};
 
 			var atom = ShellObjectWatcherNativeMethods.RegisterClassEx(ref classEx);
 			if (atom == 0)
@@ -99,7 +101,7 @@ namespace Microsoft.WindowsAPICodePack.Shell
 
 		private static IntPtr CreateWindow()
 		{
-			IntPtr handle = ShellObjectWatcherNativeMethods.CreateWindowEx(
+			var handle = ShellObjectWatcherNativeMethods.CreateWindowEx(
 				0, //extended style
 				MessageWindowClassName, //class name
 				"MessageListenerWindow", //title
@@ -127,8 +129,7 @@ namespace Microsoft.WindowsAPICodePack.Shell
 
 			while (_running)
 			{
-				Message msg;
-				if (ShellObjectWatcherNativeMethods.GetMessage(out msg, IntPtr.Zero, 0, 0))
+				if (ShellObjectWatcherNativeMethods.GetMessage(out var msg, IntPtr.Zero, 0, 0))
 				{
 					ShellObjectWatcherNativeMethods.DispatchMessage(ref msg);
 				}
@@ -153,7 +154,7 @@ namespace Microsoft.WindowsAPICodePack.Shell
 					MessageListener listener;
 					if (_listeners.TryGetValue(hwnd, out listener))
 					{
-						Message message = new Message(hwnd, msg, wparam, lparam, 0, new NativePoint());
+						var message = new Message(hwnd, msg, wparam, lparam, 0, new NativePoint());
 						listener.MessageReceived.SafeRaise(listener, new WindowMessageEventArgs(message));
 					}
 					break;
@@ -163,7 +164,7 @@ namespace Microsoft.WindowsAPICodePack.Shell
 		}
 
 		public IntPtr WindowHandle { get; private set; }
-		public static bool Running { get { return _running; } }
+		public static bool Running => _running;
 
 		#region IDisposable Members
 
@@ -207,10 +208,7 @@ namespace Microsoft.WindowsAPICodePack.Shell
 		/// </summary>
 		public Message Message { get; private set; }
 
-		internal WindowMessageEventArgs(Message msg)
-		{
-			Message = msg;
-		}
+		internal WindowMessageEventArgs(Message msg) => Message = msg;
 	}
 
 
