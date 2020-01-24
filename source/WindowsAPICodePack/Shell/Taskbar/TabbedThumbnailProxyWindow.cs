@@ -1,90 +1,90 @@
 ﻿// Copyright (c) Microsoft Corporation.  All rights reserved.
 
+using MS.WindowsAPICodePack.Internal;
 using System;
 using System.Windows;
 using System.Windows.Forms;
-using MS.WindowsAPICodePack.Internal;
 
 namespace Microsoft.WindowsAPICodePack.Taskbar
 {
-    internal sealed class TabbedThumbnailProxyWindow : Form, IDisposable
-    {
-        
-        internal TabbedThumbnailProxyWindow(TabbedThumbnail preview)
-        {
-            TabbedThumbnail = preview;
-            Size = new System.Drawing.Size(1, 1);
+	internal sealed class TabbedThumbnailProxyWindow : Form, IDisposable
+	{
 
-            if (!string.IsNullOrEmpty(preview.Title))
-            {
-                Text = preview.Title;
-            }
+		internal TabbedThumbnailProxyWindow(TabbedThumbnail preview)
+		{
+			TabbedThumbnail = preview;
+			Size = new System.Drawing.Size(1, 1);
 
-            if (preview.WindowsControl != null)
-            {                
-                WindowsControl = preview.WindowsControl;            
-            }
-        }
+			if (!string.IsNullOrEmpty(preview.Title))
+			{
+				Text = preview.Title;
+			}
 
-        internal TabbedThumbnail TabbedThumbnail { get; private set; }
+			if (preview.WindowsControl != null)
+			{
+				WindowsControl = preview.WindowsControl;
+			}
+		}
 
-        internal UIElement WindowsControl { get; private set; }
+		internal TabbedThumbnail TabbedThumbnail { get; private set; }
 
-        internal IntPtr WindowToTellTaskbarAbout { get { return this.Handle; } }
+		internal UIElement WindowsControl { get; private set; }
 
-        protected override void WndProc(ref Message m)
-        {
-            bool handled = false;
+		internal IntPtr WindowToTellTaskbarAbout => Handle;
 
-            if (this.TabbedThumbnail != null)
-            {
-                handled = TaskbarWindowManager.DispatchMessage(ref m, this.TabbedThumbnail.TaskbarWindow);
-            }
+		protected override void WndProc(ref Message m)
+		{
+			var handled = false;
 
-            // If it's a WM_Destroy message, then also forward it to the base class (our native window)
-            if ((m.Msg == (int)WindowMessage.Destroy) ||
-               (m.Msg == (int)WindowMessage.NCDestroy) ||
-               ((m.Msg == (int)WindowMessage.SystemCommand) && (((int)m.WParam) == TabbedThumbnailNativeMethods.ScClose)))
-            {
-                base.WndProc(ref m);
-            }
-            else if (!handled) { base.WndProc(ref m); }
-        }
+			if (TabbedThumbnail != null)
+			{
+				handled = TaskbarWindowManager.DispatchMessage(ref m, TabbedThumbnail.TaskbarWindow);
+			}
 
-        #region IDisposable Members
+			// If it's a WM_Destroy message, then also forward it to the base class (our native window)
+			if ((m.Msg == (int)WindowMessage.Destroy) ||
+			   (m.Msg == (int)WindowMessage.NCDestroy) ||
+			   ((m.Msg == (int)WindowMessage.SystemCommand) && (((int)m.WParam) == TabbedThumbnailNativeMethods.ScClose)))
+			{
+				base.WndProc(ref m);
+			}
+			else if (!handled) { base.WndProc(ref m); }
+		}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        ~TabbedThumbnailProxyWindow()
-        {
-            Dispose(false);
-        }
+		#region IDisposable Members
 
-        /// <summary>
-        /// Release the native objects.
-        /// </summary>
-        void IDisposable.Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+		/// <summary>
+		/// 
+		/// </summary>
+		~TabbedThumbnailProxyWindow()
+		{
+			Dispose(false);
+		}
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // Dispose managed resources
-                if (TabbedThumbnail != null) { TabbedThumbnail.Dispose(); }
+		/// <summary>
+		/// Release the native objects.
+		/// </summary>
+		void IDisposable.Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 
-                TabbedThumbnail = null;
-                
-                WindowsControl = null;
-            }
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				// Dispose managed resources
+				if (TabbedThumbnail != null) { TabbedThumbnail.Dispose(); }
 
-            base.Dispose(disposing);
-        }
+				TabbedThumbnail = null;
 
-        #endregion
-    }
+				WindowsControl = null;
+			}
+
+			base.Dispose(disposing);
+		}
+
+		#endregion
+	}
 }
