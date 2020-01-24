@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Shell.Interop;
+using Microsoft.WindowsAPICodePack.Shell.Resources;
+using MS.WindowsAPICodePack.Internal;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
-using MS.WindowsAPICodePack.Internal;
-using Microsoft.WindowsAPICodePack.Shell.Interop;
-using Microsoft.WindowsAPICodePack.Shell.Resources;
 
 namespace Microsoft.WindowsAPICodePack.Shell
 {
@@ -197,21 +197,18 @@ namespace Microsoft.WindowsAPICodePack.Shell
     }
 
 
-    /// <summary>
-    /// Encapsulates the data about a window message 
-    /// </summary>
-    public class WindowMessageEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Received windows message.
-        /// </summary>
-        public Message Message { get; private set; }
+	/// <summary>
+	/// Encapsulates the data about a window message 
+	/// </summary>
+	public class WindowMessageEventArgs : EventArgs
+	{
+		/// <summary>
+		/// Received windows message.
+		/// </summary>
+		public Message Message { get; private set; }
 
-        internal WindowMessageEventArgs(Message msg)
-        {
-            Message = msg;
-        }
-    }
+		internal WindowMessageEventArgs(Message msg) => Message = msg;
+	}
 
 
 }

@@ -1,91 +1,82 @@
 ﻿//Copyright (c) Microsoft Corporation.  All rights reserved.
 
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
 using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using Microsoft.WindowsAPICodePack.Shell.Resources;
 using MS.WindowsAPICodePack.Internal;
+using System;
+using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.WindowsAPICodePack.Shell
 {
-    /// <summary>
-    /// A helper class for Shell Objects
-    /// </summary>
-    internal static class ShellHelper
-    {
-        internal static string GetParsingName(IShellItem shellItem)
-        {
-            if (shellItem == null) { return null; }
+	/// <summary>A helper class for Shell Objects</summary>
+	internal static class ShellHelper
+	{
+		internal static PropertyKey ItemTypePropertyKey = new PropertyKey(new Guid("28636AA6-953D-11D2-B5D6-00C04FD918D0"), 11);
 
-            string path = null;
+		internal static string GetAbsolutePath(string path)
+		{
+			if (Uri.IsWellFormedUriString(path, UriKind.Absolute))
+			{
+				return path;
+			}
+			return Path.GetFullPath((path));
+		}
 
-            IntPtr pszPath = IntPtr.Zero;
-            HResult hr = shellItem.GetDisplayName(ShellNativeMethods.ShellItemDesignNameOptions.DesktopAbsoluteParsing, out pszPath);
+		internal static string GetItemType(IShellItem2 shellItem)
+		{
+			if (shellItem != null)
+			{
+				var hr = shellItem.GetString(ref ItemTypePropertyKey, out var itemType);
+				if (hr == HResult.Ok) { return itemType; }
+			}
 
-            if (hr != HResult.Ok && hr != HResult.InvalidArguments)
-            {
-                throw new ShellException(LocalizedMessages.ShellHelperGetParsingNameFailed, hr);
-            }
+			return null;
+		}
 
-            if (pszPath != IntPtr.Zero)
-            {
-                path = Marshal.PtrToStringAuto(pszPath);
-                Marshal.FreeCoTaskMem(pszPath);
-                pszPath = IntPtr.Zero;
-            }
+		internal static string GetParsingName(IShellItem shellItem)
+		{
+			if (shellItem == null) { return null; }
 
-            return path;
+			string path = null;
 
-        }
+			var pszPath = IntPtr.Zero;
+			var hr = shellItem.GetDisplayName(ShellNativeMethods.ShellItemDesignNameOptions.DesktopAbsoluteParsing, out pszPath);
 
-        internal static string GetAbsolutePath(string path)
-        {
-            if (Uri.IsWellFormedUriString(path, UriKind.Absolute))
-            {
-                return path;
-            }
-            return Path.GetFullPath((path));
-        }
+			if (hr != HResult.Ok && hr != HResult.InvalidArguments)
+			{
+				throw new ShellException(LocalizedMessages.ShellHelperGetParsingNameFailed, hr);
+			}
 
-        internal static PropertyKey ItemTypePropertyKey = new PropertyKey(new Guid("28636AA6-953D-11D2-B5D6-00C04FD918D0"), 11);
+			if (pszPath != IntPtr.Zero)
+			{
+				path = Marshal.PtrToStringAuto(pszPath);
+				Marshal.FreeCoTaskMem(pszPath);
+				pszPath = IntPtr.Zero;
+			}
 
-        internal static string GetItemType(IShellItem2 shellItem)
-        {
-            if (shellItem != null)
-            {
-                string itemType = null;                
-                HResult hr = shellItem.GetString(ref ItemTypePropertyKey, out itemType);
-                if (hr == HResult.Ok) { return itemType; }
-            }
+			return path;
+		}
 
-            return null;
-        }
+		internal static IntPtr PidlFromParsingName(string name)
+		{
+			var retCode = ShellNativeMethods.SHParseDisplayName(
+				name, IntPtr.Zero, out var pidl, 0,
+				out var sfgao);
 
-        internal static IntPtr PidlFromParsingName(string name)
-        {
-            IntPtr pidl;
+			return (CoreErrorHelper.Succeeded(retCode) ? pidl : IntPtr.Zero);
+		}
 
-            ShellNativeMethods.ShellFileGetAttributesOptions sfgao;
-            int retCode = ShellNativeMethods.SHParseDisplayName(
-                name, IntPtr.Zero, out pidl, (ShellNativeMethods.ShellFileGetAttributesOptions)0,
-                out sfgao);
+		internal static IntPtr PidlFromShellItem(IShellItem nativeShellItem)
+		{
+			var unknown = Marshal.GetIUnknownForObject(nativeShellItem);
+			return PidlFromUnknown(unknown);
+		}
 
-            return (CoreErrorHelper.Succeeded(retCode) ? pidl : IntPtr.Zero);
-        }
-
-        internal static IntPtr PidlFromShellItem(IShellItem nativeShellItem)
-        {
-            IntPtr unknown = Marshal.GetIUnknownForObject(nativeShellItem);
-            return PidlFromUnknown(unknown);
-        }
-
-        internal static IntPtr PidlFromUnknown(IntPtr unknown)
-        {
-            IntPtr pidl;
-            int retCode = ShellNativeMethods.SHGetIDListFromObject(unknown, out pidl);
-            return (CoreErrorHelper.Succeeded(retCode) ? pidl : IntPtr.Zero);
-        }
-
-    }
+		internal static IntPtr PidlFromUnknown(IntPtr unknown)
+		{
+			var retCode = ShellNativeMethods.SHGetIDListFromObject(unknown, out var pidl);
+			return (CoreErrorHelper.Succeeded(retCode) ? pidl : IntPtr.Zero);
+		}
+	}
 }
