@@ -9,7 +9,7 @@ using MS.WindowsAPICodePack.Internal;
 namespace Microsoft.WindowsAPICodePack.Sensors
 {
     /// <summary>
-    /// The SystemTime structure represents a date and time using individual members for 
+    /// The SystemTime structure represents a date and time using individual members for
     /// the month, day, year, weekday, hour, minute, second, and millisecond.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
@@ -39,8 +39,8 @@ namespace Microsoft.WindowsAPICodePack.Sensors
 
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture.NumberFormat, 
-                "{0:D2}/{1:D2}/{2:D4}, {3:D2}:{4:D2}:{5:D2}.{6}", 
+            return string.Format(CultureInfo.InvariantCulture.NumberFormat,
+                "{0:D2}/{1:D2}/{2:D4}, {3:D2}:{4:D2}:{5:D2}.{6}",
                 Month, Day, Year, Hour, Minute, Second, Millisecond);
         }
     }
