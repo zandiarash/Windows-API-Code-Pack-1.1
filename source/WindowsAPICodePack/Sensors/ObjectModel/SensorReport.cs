@@ -53,7 +53,15 @@ namespace Microsoft.WindowsAPICodePack.Sensors
         {
 
             SystemTime systemTimeStamp = new SystemTime();
-            iReport.GetTimestamp(out systemTimeStamp);
+            try
+            {
+                iReport.GetTimestamp(out systemTimeStamp);
+            }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                System.Diagnostics.Trace.WriteLine(ex);
+                return null;
+            }
             FILETIME ftTimeStamp = new FILETIME();
             SensorNativeMethods.SystemTimeToFileTime(ref systemTimeStamp, out ftTimeStamp);
             long lTimeStamp = (((long)ftTimeStamp.dwHighDateTime) << 32) + (long)ftTimeStamp.dwLowDateTime;
