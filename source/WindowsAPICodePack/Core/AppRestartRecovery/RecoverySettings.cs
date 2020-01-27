@@ -37,31 +37,31 @@ namespace Microsoft.WindowsAPICodePack.ApplicationServices
         /// <value>A <see cref="RecoveryData"/> object.</value>
 
         /* Unmerged change from project 'Core (netcoreapp3.0)'
-		Before:
-				public RecoveryData RecoveryData
-				{
-					get { return recoveryData; }
-		After:
-				public RecoveryData RecoveryData => recoveryData; }
-		*/
+        Before:
+                public RecoveryData RecoveryData
+                {
+                    get { return recoveryData; }
+        After:
+                public RecoveryData RecoveryData => recoveryData; }
+        */
 
         /* Unmerged change from project 'Core (net462)'
-		Before:
-				public RecoveryData RecoveryData
-				{
-					get { return recoveryData; }
-		After:
-				public RecoveryData RecoveryData => recoveryData; }
-		*/
+        Before:
+                public RecoveryData RecoveryData
+                {
+                    get { return recoveryData; }
+        After:
+                public RecoveryData RecoveryData => recoveryData; }
+        */
 
         /* Unmerged change from project 'Core (net472)'
-		Before:
-				public RecoveryData RecoveryData
-				{
-					get { return recoveryData; }
-		After:
-				public RecoveryData RecoveryData => recoveryData; }
-		*/
+        Before:
+                public RecoveryData RecoveryData
+                {
+                    get { return recoveryData; }
+        After:
+                public RecoveryData RecoveryData => recoveryData; }
+        */
         public uint PingInterval => pingInterval;
         public RecoveryData RecoveryData => recoveryData;
 
@@ -76,25 +76,25 @@ namespace Microsoft.WindowsAPICodePack.ApplicationServices
         /// </remarks>
 
         /* Unmerged change from project 'Core (netcoreapp3.0)'
-		Before:
-				public uint PingInterval { get { return pingInterval; } }
-		After:
-				public uint PingInterval => pingInterval; } }
-		*/
+        Before:
+                public uint PingInterval { get { return pingInterval; } }
+        After:
+                public uint PingInterval => pingInterval; } }
+        */
 
         /* Unmerged change from project 'Core (net462)'
-		Before:
-				public uint PingInterval { get { return pingInterval; } }
-		After:
-				public uint PingInterval => pingInterval; } }
-		*/
+        Before:
+                public uint PingInterval { get { return pingInterval; } }
+        After:
+                public uint PingInterval => pingInterval; } }
+        */
 
         /* Unmerged change from project 'Core (net472)'
-		Before:
-				public uint PingInterval { get { return pingInterval; } }
-		After:
-				public uint PingInterval => pingInterval; } }
-		*/
+        Before:
+                public uint PingInterval { get { return pingInterval; } }
+        After:
+                public uint PingInterval => pingInterval; } }
+        */
 
         /// <summary>Returns a string representation of the current state of this object.</summary>
         /// <returns>A <see cref="System.String"/> object.</returns>

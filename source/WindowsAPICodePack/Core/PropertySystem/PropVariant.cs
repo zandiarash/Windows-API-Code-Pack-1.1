@@ -113,7 +113,7 @@ namespace MS.WindowsAPICodePack.Internal
                 {
                     typeof(float),
                     (pv, array, i) => // float
-					{
+                    {
                         var val = new float[1];
                         Marshal.Copy(pv._ptr2, val, (int)i, 1);
                         array.SetValue(val[0], (int)i);
@@ -129,7 +129,7 @@ namespace MS.WindowsAPICodePack.Internal
       {
           val[a] = Marshal.ReadInt32(pv._ptr2,
               (int)i * sizeof(decimal) + a * sizeof(int)); //index * size + offset quarter
-				}
+                }
       array.SetValue(new decimal(val), i);
   }
                 },
