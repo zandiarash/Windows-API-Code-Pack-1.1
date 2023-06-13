@@ -1,3 +1,13 @@
+### 2023-06-11  
+**Core 1.1.5**  
+**Shell 1.1.5**  
+**ShellExtensions 1.1.5**  
+**Sensors 1.1.5**  
+**ExtendedLinguisticServices 1.1.5**  
+- Fix TaskDialog.DefaultButton property is ignored
+- remove first dot in extension
+- update list of available target frameworks
+
 ### 2018-06-19  
 **Core 1.1.3.3**  
 **Shell 1.1.3.3**  
