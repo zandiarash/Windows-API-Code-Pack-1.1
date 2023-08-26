@@ -2,9 +2,9 @@
 
 ## README
 
-This is a fork of the Microsoft © Windows API Code Pack, based on a repository created by [Aybe](https://github.com/aybe/Windows-API-Code-Pack-1.1). Due to the lack of updates to the original package, this fork was created to include all open pull requests on the original repository, apply fixes and add support for all current .NET Framework and .NET Core versions.
+This is a fork of the Microsoft Â© Windows API Code Pack, based on a repository created by [Aybe](https://github.com/aybe/Windows-API-Code-Pack-1.1). Due to the lack of updates to the original package, this fork was created to include all open pull requests on the original repository, apply fixes and add support for all current .NET Framework and .NET Core versions.
 
-Now with added .Net5.0 support ! (windows only)
+Now with added .Net7.0 support ! (windows only)
 
 ## NuGet packages (recommended)
 
